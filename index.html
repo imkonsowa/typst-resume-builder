@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Modern Resume Builder</title>
+    <script
+            type="module"
+            src="https://cdn.jsdelivr.net/npm/@myriaddreamin/typst.ts@0.5.0-rc5/dist/esm/contrib/all-in-one-lite.bundle.js"
+            id="typst"
+    ></script>
+    <script>
+        document.getElementById('typst').addEventListener('load', function () {
+            $typst.setCompilerInitOptions({
+                getModule: () =>
+                        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler@0.5.0-rc5/pkg/typst_ts_web_compiler_bg.wasm',
+            });
+            $typst.setRendererInitOptions({
+                getModule: () =>
+                        'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer@0.5.0-rc5/pkg/typst_ts_renderer_bg.wasm',
+            });
+
+            console.log($typst)
+        });
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+          rel="stylesheet">
+
+    <style>
+        #resume-preview {
+            font-family: "system-ui";
+            font-size: 600px;
+        }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
