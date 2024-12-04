@@ -50,6 +50,7 @@ export const ExperienceForm: React.FC<ExperienceFormProps> = ({
                 <Input
                     label="Start Date"
                     type="month"
+                    format="yyyy-MM"
                     {...register(`experiences.${index}.startDate`)}
                 />
                 <div className="space-y-2">

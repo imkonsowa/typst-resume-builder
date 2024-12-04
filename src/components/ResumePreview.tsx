@@ -1,7 +1,10 @@
 import {useEffect, useState} from 'react';
 import {ResumeData} from '../types/resume';
 import {BookOpen, Dribbble, Edit3, GitHub, Globe, Link as LinkIcon, Linkedin, Twitter} from 'react-feather';
-import {employee} from "../icons";
+import * as images from './images'
+
+// import { $typst } from '@myriaddreamin/typst.ts/dist/esm/contrib/snippet.mjs';
+// import { createTypstCompiler } from '@myriaddreamin/typst.ts';
 
 interface ResumePreviewProps {
     data: ResumeData;
@@ -59,10 +62,16 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
         }
 
         return `
-            ==   Employment History
+            #let base64-person = "${images.personBase64}"
+            #let person-raw = base64.decode(base64-person)
+                        
+            #show heading.where(level: 1): it => "  " + it.body + [ ]
+            // #box(image.decode(person-raw, format: "png", width: 3%, height: 2%))
+            #fa-icon("user", solid: true, size: 20pt) #text("  Employment History", size: 20pt, weight: "bold")
+            
             ${data?.experiences.map((experience) => {
             return `
-                === ${experience.company}
+                == ${experience.company}
                 ${experience.position}
                 ${experience.startDate} - ${experience.isPresent ? 'Present' : experience.endDate}
                 ${experience.descriptions.map(des => {
@@ -75,26 +84,51 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
         `;
     }
 
+    const renderEducation = (data: ResumeData) => {
+        if (data?.education.length === 0) {
+            return '';
+        }
+
+        return `
+            #let base64-education = "${images.educationBase64}"
+            #let education-raw = base64.decode(base64-education)
+            
+            #show heading.where(level: 2): it => "  " + it.body  + [ ]
+            
+            #fa-icon("school", solid: true, size: 20pt) #text("  Education", size: 20pt, weight: "bold")
+            
+            ${data?.education.map((education) => {
+            return `
+                == ${education.institution}
+                ${education.degree}
+                ${education.startDate} - ${education.endDate}
+            `;
+        }).join('')}
+        `;
+    }
+
     const convertToTypstSyntax = (data: ResumeData) => {
-        // This is a basic example - expand based on your Typst syntax needs
         return `
         #import "@preview/fontawesome:0.5.0": *
+        #import "@preview/based:0.1.0": base64
         #set page(margin: 1.5cm)
         #set text(font: "Roboto", size: 14pt)
-        
+       
         ${convertBasicInformation(data)} 
         \\ 
         ${renderProfile(data)} 
         \\
         ${renderEmploymentHistory(data)}
-         
+        \\
+        ${renderEducation(data)}
       `;
     };
 
+    // @ts-ignore
     const downloadPdf = async () => {
         try {
             const typstContent = convertToTypstSyntax(data);
-            const pdf = await window.$typst.pdf({mainContent: typstContent});
+            const pdf = await $typst.pdf({mainContent: typstContent});
             const blob = new Blob([pdf], {type: 'application/pdf'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -102,6 +136,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
             a.download = 'resume.pdf';
             a.click();
         } catch (error) {
+            console.error(error)
             alert("Failed to generate PDF. Please check the console for more information.");
         }
     }
