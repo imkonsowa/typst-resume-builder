@@ -4,7 +4,6 @@ import {BookOpen, Dribbble, Edit3, GitHub, Globe, Link as LinkIcon, Linkedin, Tw
 import * as images from './images'
 
 // import { $typst } from '@myriaddreamin/typst.ts/dist/esm/contrib/snippet.mjs';
-// import { createTypstCompiler } from '@myriaddreamin/typst.ts';
 
 interface ResumePreviewProps {
     data: ResumeData;
@@ -32,7 +31,6 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
             }
         };
 
-        // Check for Typst availability
         const checkTypst = setInterval(() => {
             if (window.$typst) {
                 clearInterval(checkTypst);
@@ -148,7 +146,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
         const compileContent = async () => {
             try {
                 const typstContent = convertToTypstSyntax(data);
-                const svg = await window.$typst.svg({mainContent: typstContent});
+                const svg = await $typst.svg({mainContent: typstContent});
                 setSvgContent(svg);
             } catch (error) {
                 console.log(error)

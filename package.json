@@ -14,7 +14,7 @@
     "@heroicons/react": "2.0.18",
     "@myriaddreamin/typst-ts-renderer": "^0.5.0",
     "@myriaddreamin/typst-ts-web-compiler": "^0.5.0",
-    "@myriaddreamin/typst.ts": "^0.5.0",
+    "@myriaddreamin/typst.ts": "^0.5.0-rc5",
     "clsx": "^2.0.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
