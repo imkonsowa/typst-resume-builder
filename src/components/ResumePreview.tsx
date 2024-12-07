@@ -60,11 +60,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
         }
 
         return `
-            #let base64-person = "${images.personBase64}"
-            #let person-raw = base64.decode(base64-person)
-                        
             #show heading.where(level: 1): it => "  " + it.body + [ ]
-            // #box(image.decode(person-raw, format: "png", width: 3%, height: 2%))
             #fa-icon("user", solid: true, size: 20pt) #text("  Employment History", size: 20pt, weight: "bold")
             
             ${data?.experiences.map((experience) => {
@@ -75,7 +71,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
                 ${experience.descriptions.map(des => {
                     return `
                         - #text("${des.text}")
-                    `    
+                    `       
                 }).join('\n')}
             `;
         }).join('')}
@@ -88,9 +84,6 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
         }
 
         return `
-            #let base64-education = "${images.educationBase64}"
-            #let education-raw = base64.decode(base64-education)
-            
             #show heading.where(level: 2): it => "  " + it.body  + [ ]
             
             #fa-icon("school", solid: true, size: 20pt) #text("  Education", size: 20pt, weight: "bold")
@@ -146,6 +139,7 @@ export const ResumePreview: React.FC<ResumePreviewProps> = ({data}) => {
         const compileContent = async () => {
             try {
                 const typstContent = convertToTypstSyntax(data);
+                console.log(typstContent)
                 const svg = await $typst.svg({mainContent: typstContent});
                 setSvgContent(svg);
             } catch (error) {
